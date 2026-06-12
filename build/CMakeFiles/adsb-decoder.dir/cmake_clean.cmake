@@ -4,6 +4,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/adsb-decoder.dir/adsb.pb.cc.o.d"
   "CMakeFiles/adsb-decoder.dir/src/main.cpp.o"
   "CMakeFiles/adsb-decoder.dir/src/main.cpp.o.d"
+  "CMakeFiles/adsb-decoder.dir/src/preamble.cpp.o"
+  "CMakeFiles/adsb-decoder.dir/src/preamble.cpp.o.d"
   "CMakeFiles/adsb-decoder.dir/src/sdr.cpp.o"
   "CMakeFiles/adsb-decoder.dir/src/sdr.cpp.o.d"
   "adsb-decoder"

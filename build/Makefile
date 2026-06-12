@@ -177,6 +177,30 @@ src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/adsb-decoder.dir/build.make CMakeFiles/adsb-decoder.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
+src/preamble.o: src/preamble.cpp.o
+.PHONY : src/preamble.o
+
+# target to build an object file
+src/preamble.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/adsb-decoder.dir/build.make CMakeFiles/adsb-decoder.dir/src/preamble.cpp.o
+.PHONY : src/preamble.cpp.o
+
+src/preamble.i: src/preamble.cpp.i
+.PHONY : src/preamble.i
+
+# target to preprocess a source file
+src/preamble.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/adsb-decoder.dir/build.make CMakeFiles/adsb-decoder.dir/src/preamble.cpp.i
+.PHONY : src/preamble.cpp.i
+
+src/preamble.s: src/preamble.cpp.s
+.PHONY : src/preamble.s
+
+# target to generate assembly for a file
+src/preamble.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/adsb-decoder.dir/build.make CMakeFiles/adsb-decoder.dir/src/preamble.cpp.s
+.PHONY : src/preamble.cpp.s
+
 src/sdr.o: src/sdr.cpp.o
 .PHONY : src/sdr.o
 
@@ -216,6 +240,9 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/preamble.o"
+	@echo "... src/preamble.i"
+	@echo "... src/preamble.s"
 	@echo "... src/sdr.o"
 	@echo "... src/sdr.i"
 	@echo "... src/sdr.s"

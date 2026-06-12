@@ -82,6 +82,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/share/cmake-3.31/Modules/Compiler/zOS-CXX-DetermineCompiler.cmake"
   "/usr/share/cmake-3.31/Modules/FindPackageHandleStandardArgs.cmake"
   "/usr/share/cmake-3.31/Modules/FindPackageMessage.cmake"
+  "/usr/share/cmake-3.31/Modules/FindPkgConfig.cmake"
   "/usr/share/cmake-3.31/Modules/FindProtobuf.cmake"
   "/usr/share/cmake-3.31/Modules/FindThreads.cmake"
   "/usr/share/cmake-3.31/Modules/Internal/CMakeCXXLinkerInformation.cmake"

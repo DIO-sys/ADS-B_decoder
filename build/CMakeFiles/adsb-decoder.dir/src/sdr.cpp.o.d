@@ -195,4 +195,7 @@ CMakeFiles/adsb-decoder.dir/src/sdr.cpp.o: \
  /usr/include/c++/15/tr1/poly_hermite.tcc \
  /usr/include/c++/15/tr1/poly_laguerre.tcc \
  /usr/include/c++/15/tr1/riemann_zeta.tcc /usr/include/c++/15/sstream \
- /usr/include/c++/15/bits/sstream.tcc /usr/include/c++/15/iostream
+ /usr/include/c++/15/bits/sstream.tcc /usr/include/libbladeRF.h \
+ /usr/include/inttypes.h /usr/include/c++/15/stdlib.h \
+ /usr/include/bladeRF1.h /usr/include/bladeRF2.h \
+ /usr/include/c++/15/iostream
