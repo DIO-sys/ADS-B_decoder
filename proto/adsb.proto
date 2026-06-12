@@ -1,0 +1,21 @@
+syntax = "proto3";
+package adsb;
+
+message AircraftRecord {
+    uint32 icao_address    = 1;
+    string callsign        = 2;
+    double latitude        = 3;
+    double longitude       = 4;
+    int32  altitude_ft     = 5;
+    float  ground_speed    = 6;
+    float  heading         = 7;
+    float  vertical_rate   = 8;
+    int64  timestamp_ms    = 9;
+    float  signal_power    = 10;
+    bool   crc_valid       = 11;
+    uint32 downlink_format = 12;
+    uint32 type_code       = 13;
+    bool   is_odd_frame    = 14;
+    uint32 raw_latitude    = 15;
+    uint32 raw_longitude   = 16;
+}

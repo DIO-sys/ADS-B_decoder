@@ -1,0 +1,23 @@
+cmake_minimum_required(VERSION 3.16)
+project(adsb-decoder LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+find_package(Protobuf REQUIRED)
+
+set(PROTO_SRC "${CMAKE_CURRENT_SOURCE_DIR}/proto/adsb.proto")
+protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${PROTO_SRC})
+
+add_executable(adsb-decoder
+    src/main.cpp
+    src/sdr.cpp
+    ${PROTO_SRCS}
+)
+
+target_include_directories(adsb-decoder PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+target_link_libraries(adsb-decoder PRIVATE protobuf::libprotobuf)
