@@ -8,7 +8,7 @@
 #include <arpa/inet.h>
 
 TcpServer::~TcpServer() { stop(); }
-
+// Start listening on the specified port and spawn the accept thread
 bool TcpServer::listen(uint16_t port) {
     listen_fd_ = socket(AF_INET, SOCK_STREAM, 0);
     if (listen_fd_ < 0) {
@@ -42,7 +42,7 @@ bool TcpServer::listen(uint16_t port) {
     std::printf("[TcpServer] Listening on port %d\n", port);
     return true;
 }
-
+//loop that accepts incoming client connections and adds them to the clients_ vector
 void TcpServer::acceptLoop() {
     while (running_) {
         fd_set fds;
@@ -65,6 +65,7 @@ void TcpServer::acceptLoop() {
     }
 }
 
+// Send length-prefixed protobuf message to all connected clients, removing any that have disconnected
 void TcpServer::broadcast(const AircraftState& ac, int64_t timestamp_ms) {
     adsb::AircraftRecord record;
     record.set_icao_address(ac.icao_address);
@@ -115,7 +116,7 @@ void TcpServer::broadcast(const AircraftState& ac, int64_t timestamp_ms) {
         }
     }
 }
-
+//end the listening threads, close all client connections, and clean up the listening socket
 void TcpServer::stop() {
     running_ = false;
     if (accept_thread_.joinable()) accept_thread_.join();
@@ -131,7 +132,9 @@ void TcpServer::stop() {
     std::printf("[TcpServer] Stopped\n");
 }
 
+// Return the number of currently connected clients
 int TcpServer::clientCount() const {
+    //lock guard automatically locks the mutex on contruction and unlocks it on destruction
     std::lock_guard<std::mutex> lock(clients_mu_);
     return clients_.size();
 }

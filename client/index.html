@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADS-B Tracker</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: monospace; background: #1a1a2e; }
+        #map { width: 100vw; height: 100vh; }
+
+        #stats {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #0f0;
+            padding: 12px 16px;
+            border-radius: 6px;
+            z-index: 1000;
+            font-size: 13px;
+            min-width: 180px;
+        }
+
+        #stats .label { color: #888; }
+        #stats .value { color: #0f0; font-weight: bold; }
+        #connection { margin-bottom: 8px; }
+        #connection.connected { color: #0f0; }
+        #connection.disconnected { color: #f00; }
+
+        .aircraft-label {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #0f0;
+            color: #0f0;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+            font-size: 11px;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div id="stats">
+        <div id="connection" class="disconnected">DISCONNECTED</div>
+        <div><span class="label">Aircraft: </span><span class="value" id="count">0</span></div>
+        <div><span class="label">Messages: </span><span class="value" id="msgs">0</span></div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        const WS_URL = 'ws://localhost:8080';
+        const EXPIRE_MS = 60000;
+
+        // Init map centered on Yaoundé
+        const map = L.map('map').setView([3.87, 11.52], 8);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap',
+            maxZoom: 18
+        }).addTo(map);
+
+        // Aircraft icon
+        function createIcon(heading) {
+            return L.divIcon({
+                className: '',
+                html: `<svg width="28" height="28" viewBox="0 0 28 28" style="transform: rotate(${heading}deg)">
+                    <path d="M14 2 L18 12 L26 22 L14 18 L2 22 L10 12 Z"
+                          fill="#00ff00" fill-opacity="0.8" stroke="#003300" stroke-width="1"/>
+                </svg>`,
+                iconSize: [28, 28],
+                iconAnchor: [14, 14]
+            });
+        }
+
+        const aircraft = {};
+        let msgCount = 0;
+
+        function updateAircraft(data) {
+            msgCount++;
+            document.getElementById('msgs').textContent = msgCount;
+
+            const icao = data.icaoAddress.toString(16).toUpperCase().padStart(6, '0');
+            const key = icao;
+
+            if (!aircraft[key]) {
+                aircraft[key] = {
+                    marker: null,
+                    label: null,
+                    lastSeen: Date.now()
+                };
+            }
+
+            const ac = aircraft[key];
+            ac.lastSeen = Date.now();
+            ac.data = data;
+
+            const lat = data.latitude;
+            const lon = data.longitude;
+            const heading = data.heading || 0;
+
+            if (lat === 0 && lon === 0) return;
+
+            if (!ac.marker) {
+                ac.marker = L.marker([lat, lon], { icon: createIcon(heading) }).addTo(map);
+
+                const callsign = data.callsign || icao;
+                const alt = data.altitudeFt || 0;
+                ac.label = L.tooltip({
+                    permanent: true,
+                    direction: 'right',
+                    offset: [15, 0],
+                    className: 'aircraft-label'
+                });
+                ac.marker.bindTooltip(ac.label);
+            }
+
+            ac.marker.setLatLng([lat, lon]);
+            ac.marker.setIcon(createIcon(heading));
+
+            const callsign = data.callsign || icao;
+            const alt = data.altitudeFt || 0;
+            const spd = data.groundSpeed ? data.groundSpeed.toFixed(0) : '?';
+            ac.label.setContent(`${callsign} ${alt}ft ${spd}kt`);
+
+            document.getElementById('count').textContent = Object.keys(aircraft).length;
+        }
+
+        // Remove stale aircraft
+        setInterval(() => {
+            const now = Date.now();
+            for (const key in aircraft) {
+                if (now - aircraft[key].lastSeen > EXPIRE_MS) {
+                    if (aircraft[key].marker) {
+                        map.removeLayer(aircraft[key].marker);
+                    }
+                    delete aircraft[key];
+                }
+            }
+            document.getElementById('count').textContent = Object.keys(aircraft).length;
+        }, 5000);
+
+        // WebSocket connection with auto-reconnect
+        function connect() {
+            const ws = new WebSocket(WS_URL);
+
+            ws.onopen = () => {
+                document.getElementById('connection').textContent = 'CONNECTED';
+                document.getElementById('connection').className = 'connected';
+                console.log('Connected to bridge');
+            };
+
+            ws.onmessage = (event) => {
+                try {
+                    const data = JSON.parse(event.data);
+                    updateAircraft(data);
+                } catch (err) {
+                    console.error('Parse error:', err);
+                }
+            };
+
+            ws.onclose = () => {
+                document.getElementById('connection').textContent = 'DISCONNECTED';
+                document.getElementById('connection').className = 'disconnected';
+                console.log('Disconnected, reconnecting in 2s...');
+                setTimeout(connect, 2000);
+            };
+
+            ws.onerror = (err) => {
+                console.error('WebSocket error:', err);
+                ws.close();
+            };
+        }
+
+        connect();
+    </script>
+</body>
+</html>
