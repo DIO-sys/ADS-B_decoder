@@ -6,7 +6,7 @@ This document covers the design decisions, tradeoffs, and implementation details
 
 ## Signal Acquisition
 
-The BladeRF 2.0 Micro xA4 is configured to 1090 MHz at 2 MSPS in SC16Q11 format — signed 16-bit I and Q interleaved, with 11 fractional bits. This is the minimum sample rate for Mode S: the 1 Mbps pulse position modulation requires exactly 2 samples per bit period to distinguish early from late pulse energy.
+The BladeRF 2.0 Micro xA4 is configured to 1090 MHz at 2 MSPS in SC16Q11 format using signed 16-bit I and Q interleaved, with 11 fractional bits. This is the minimum sample rate for Mode S: the 1 Mbps pulse position modulation requires exactly 2 samples per bit period to distinguish early from late pulse energy.
 
 Configuration is loaded from `config/bladerf.conf` at startup. All BladeRF parameters — frequency, sample rate, bandwidth, gain, buffer geometry, timeout — are externalized so the same binary works across different RF environments without recompilation. The `SdrCapture` class abstracts hardware from file: the rest of the pipeline calls `readSamples()` and never knows whether the data comes from a live antenna or a recording. This abstraction enabled the entire decoder to be developed and validated against recorded IQ files before any antenna was connected.
 
@@ -37,7 +37,7 @@ Each check costs one comparison. If any fails, the position is rejected without 
 
 ### Threshold Selection
 
-The threshold of 3.0 was chosen empirically against the dump1090 `modes1.bin` test file. At 1.5, the detector triggered on noise at nearly the same rate as real signals, producing a uniform DF distribution across all 32 downlink formats — the signature of random data being decoded. At 3.0, the noise rate dropped significantly while retaining all real signals. The CRC-24 check downstream serves as the ultimate gatekeeper: even if a false preamble passes the threshold, the decoded payload will fail CRC with overwhelming probability (1 in 16.7 million chance of a random 24-bit match).
+The threshold of 3.0 was chosen empirically against the dump1090 `modes1.bin` test file. At 1.5, the detector triggered on noise at nearly the same rate as real signals, producing a uniform DF distribution across all 32 downlink formats which is lowkey the signature of random data being decoded. At 3.0, the noise rate dropped significantly while retaining all real signals. The CRC-24 check downstream serves as the ultimate gatekeeper: even if a false preamble passes the threshold, the decoded payload will fail CRC with overwhelming probability (1 in 16.7 million chance of a random 24-bit match).
 
 After a valid preamble is found, the detector skips forward by 240 samples (16 preamble + 224 payload) to avoid re-triggering on the same frame.
 
@@ -57,7 +57,7 @@ if (early > late) payload[byte_index] |= (1 << bit_position);
 
 Bits are packed MSB-first into a 14-byte array, matching the ICAO specification's bit numbering convention.
 
-A generic bit extraction helper `getBits(payload, start, len)` replaces manual shift-and-mask operations throughout the parsing code. Bit positions map directly to the ICAO spec tables: `getBits(p, 54, 17)` reads "17 bits starting at bit 54" — the CPR encoded latitude, exactly as documented in Doc 9871.
+A generic bit extraction helper `getBits(payload, start, len)` replaces manual shift-and-mask operations throughout the parsing code. Bit positions map directly to the ICAO spec tables: `getBits(p, 54, 17)` reads "17 bits starting at bit 54" that's the CPR encoded latitude, just as documented in Doc 9871.
 
 ### CRC-24
 
@@ -75,7 +75,7 @@ for (size_t i = 0; i < bytes; i++) {
 }
 ```
 
-CRC validation occurs before any payload field is parsed. If CRC fails, the frame is discarded without further processing. For DF17 (ADS-B), the CRC covers the data directly. For DF11 (all-call reply), the ICAO address is XORed into the CRC remainder, so validation requires a different approach — the decoder extracts the address from the XOR of computed and received CRC values.
+CRC validation occurs before any payload field is parsed. If CRC fails, the frame is discarded without further processing. For DF17 (ADS-B), the CRC covers the data directly. For DF11 (all-call reply), the ICAO address is XORed into the CRC remainder, so validation requires a different approach in that case the decoder extracts the address from the XOR of computed and received CRC values.
 
 The initial bit-by-bit CRC implementation produced incorrect results due to an XOR timing error — the generator polynomial was applied simultaneously with the data bit insertion rather than after the shift. This was identified by testing against a known-good message from the dump1090 test suite (`8D479E84580FD03D66D139C1CD17`). Switching to the byte-oriented approach resolved the issue. The lesson: always validate cryptographic and integrity functions with known test vectors before trusting downstream results.
 
@@ -101,15 +101,13 @@ The earth's latitude is divided into zones — 60 for even frames, 59 for odd fr
 
 Longitude resolution depends on latitude through the NL (Number of Longitude zones) function, which accounts for meridian convergence toward the poles. At the equator there are 59 longitude zones; near the poles there is 1. The NL function uses a trigonometric formula from the ICAO spec to compute the zone count for any latitude.
 
-### Global vs Local Decode
+### Global
 
 Global decode requires both an even and odd frame from the same aircraft, received within 10 seconds. It resolves position unambiguously anywhere on earth with no prior knowledge of the aircraft's location.
 
-Local decode requires only one frame plus a known reference position (from a previous global decode). It is faster but only valid within approximately 180 nautical miles of the reference. The current implementation uses global decode exclusively; local decode is implemented but not called, reserved for optimization of live tracking where position updates after the initial fix need only one frame.
-
 ### NL Consistency Check
 
-Before computing longitude, the decoder verifies that the even and odd latitudes produce the same NL value. If they don't — which can happen when the aircraft crosses a latitude zone boundary between frames — the pair is rejected and the decoder waits for a fresh pair. This prevents erroneous position jumps at zone transitions.
+Before computing longitude, the decoder verifies that the even and odd latitudes produce the same NL value. If they don't which can happen when the aircraft crosses a latitude zone boundary between frames suprisingly the pair is rejected and the decoder waits for a fresh pair. This prevents erroneous position jumps at zone transitions.
 
 ### Validated Result
 
@@ -134,9 +132,9 @@ The tracker only processes CRC-valid DF17 messages. DF11 messages are accepted f
 
 ## Protobuf Serialization
 
-The `AircraftRecord` protobuf message carries all decoded fields. Protocol Buffers were chosen over raw JSON for three reasons. First, binary efficiency — a serialized AircraftRecord is typically 30-50 bytes vs 200+ bytes for equivalent JSON. At high message rates this matters for TCP throughput. Second, schema evolution — fields can be added without breaking existing clients. Third, cross-language support — the same `.proto` file generates both the C++ server serializer and the Python client deserializer, guaranteeing wire compatibility.
+The `AircraftRecord` protobuf message carries all decoded fields. Protocol Buffers were chosen over raw JSON for three reasons. First, binary efficiency because a serialized AircraftRecord is typically 30-50 bytes vs 200+ bytes for equivalent JSON. At high message rates this matters for TCP throughput. Second, schema evolution so that fields can be added without breaking existing clients. Third, cross-language support — the same `.proto` file generates both the C++ server serializer and the Python client deserializer, guaranteeing wire compatibility.
 
-Messages are framed with a 4-byte big-endian length prefix. The receiver reads 4 bytes to learn the payload size, then reads exactly that many bytes and deserializes. This solves TCP's stream-oriented nature — without framing, message boundaries would be lost in the byte stream.
+Messages are framed with a 4-byte big-endian length prefix. The receiver reads 4 bytes to learn the payload size, then reads exactly that many bytes and deserializes. This solves TCP's stream-oriented nature and without framing, message boundaries would be lost in the byte stream.
 
 ---
 
