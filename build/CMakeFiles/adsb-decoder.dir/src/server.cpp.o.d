@@ -1,6 +1,9 @@
-CMakeFiles/adsb-decoder.dir/src/main.cpp.o: \
- /home/timodagoat/code/ADS-B_decoder/src/main.cpp \
+CMakeFiles/adsb-decoder.dir/src/server.cpp.o: \
+ /home/timodagoat/code/ADS-B_decoder/src/server.cpp \
  /usr/include/stdc-predef.h \
+ /home/timodagoat/code/ADS-B_decoder/include/server.h \
+ /home/timodagoat/code/ADS-B_decoder/include/aircraft.h \
+ /home/timodagoat/code/ADS-B_decoder/include/decoder.h \
  /home/timodagoat/code/ADS-B_decoder/include/sdr.h \
  /usr/include/c++/15/cstdint \
  /usr/include/x86_64-linux-gnu/c++/15/bits/c++config.h \
@@ -202,10 +205,7 @@ CMakeFiles/adsb-decoder.dir/src/main.cpp.o: \
  /usr/include/c++/15/bits/vector.tcc /usr/include/libbladeRF.h \
  /usr/include/inttypes.h /usr/include/c++/15/stdlib.h \
  /usr/include/bladeRF1.h /usr/include/bladeRF2.h \
- /home/timodagoat/code/ADS-B_decoder/include/preamble.h \
- /home/timodagoat/code/ADS-B_decoder/include/decoder.h \
  /usr/include/c++/15/array /usr/include/c++/15/compare \
- /home/timodagoat/code/ADS-B_decoder/include/aircraft.h \
  /home/timodagoat/code/ADS-B_decoder/include/cpr.h \
  /usr/include/c++/15/unordered_map \
  /usr/include/c++/15/bits/unordered_map.h \
@@ -215,7 +215,6 @@ CMakeFiles/adsb-decoder.dir/src/main.cpp.o: \
  /usr/include/c++/15/bits/enable_special_members.h \
  /usr/include/c++/15/bits/node_handle.h \
  /usr/include/c++/15/bits/erase_if.h \
- /home/timodagoat/code/ADS-B_decoder/include/server.h \
  /home/timodagoat/code/ADS-B_decoder/build/adsb.pb.h \
  /usr/include/google/protobuf/port_def.inc \
  /usr/include/google/protobuf/port_undef.inc \
@@ -305,34 +304,22 @@ CMakeFiles/adsb-decoder.dir/src/main.cpp.o: \
  /usr/include/google/protobuf/map_type_handler.h \
  /usr/include/google/protobuf/extension_set.h /usr/include/c++/15/cassert \
  /usr/include/c++/15/thread /usr/include/c++/15/bits/std_thread.h \
- /usr/include/c++/15/bits/this_thread_sleep.h /usr/include/c++/15/csignal \
- /usr/include/signal.h \
- /usr/include/x86_64-linux-gnu/bits/signum-generic.h \
- /usr/include/x86_64-linux-gnu/bits/signum-arch.h \
- /usr/include/x86_64-linux-gnu/bits/types/sig_atomic_t.h \
- /usr/include/x86_64-linux-gnu/bits/types/siginfo_t.h \
- /usr/include/x86_64-linux-gnu/bits/types/__sigval_t.h \
- /usr/include/x86_64-linux-gnu/bits/siginfo-arch.h \
- /usr/include/x86_64-linux-gnu/bits/siginfo-consts.h \
- /usr/include/x86_64-linux-gnu/bits/siginfo-consts-arch.h \
- /usr/include/x86_64-linux-gnu/bits/types/sigval_t.h \
- /usr/include/x86_64-linux-gnu/bits/types/sigevent_t.h \
- /usr/include/x86_64-linux-gnu/bits/sigevent-consts.h \
- /usr/include/x86_64-linux-gnu/bits/sigaction.h \
- /usr/include/x86_64-linux-gnu/bits/sigcontext.h \
- /usr/include/x86_64-linux-gnu/bits/types/stack_t.h \
- /usr/include/x86_64-linux-gnu/sys/ucontext.h \
- /usr/include/x86_64-linux-gnu/bits/sigstack.h \
- /usr/include/x86_64-linux-gnu/bits/sigstksz.h /usr/include/unistd.h \
- /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
+ /usr/include/c++/15/bits/this_thread_sleep.h \
+ /usr/include/x86_64-linux-gnu/sys/socket.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h \
+ /usr/include/x86_64-linux-gnu/bits/socket.h \
+ /usr/include/x86_64-linux-gnu/bits/socket_type.h \
+ /usr/include/x86_64-linux-gnu/bits/sockaddr.h \
+ /usr/include/x86_64-linux-gnu/asm/socket.h \
+ /usr/include/asm-generic/socket.h \
+ /usr/include/x86_64-linux-gnu/asm/sockios.h \
+ /usr/include/asm-generic/sockios.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_osockaddr.h \
+ /usr/include/netinet/in.h /usr/include/x86_64-linux-gnu/bits/in.h \
+ /usr/include/unistd.h /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
  /usr/include/x86_64-linux-gnu/bits/environments.h \
  /usr/include/x86_64-linux-gnu/bits/confname.h \
  /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
  /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
  /usr/include/x86_64-linux-gnu/bits/unistd_ext.h \
- /usr/include/linux/close_range.h \
- /usr/include/x86_64-linux-gnu/bits/ss_flags.h \
- /usr/include/x86_64-linux-gnu/bits/types/struct_sigstack.h \
- /usr/include/x86_64-linux-gnu/bits/sigthread.h \
- /usr/include/x86_64-linux-gnu/bits/signal_ext.h \
- /usr/include/c++/15/chrono
+ /usr/include/linux/close_range.h /usr/include/arpa/inet.h

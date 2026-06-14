@@ -153,6 +153,54 @@ adsb.pb.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/adsb-decoder.dir/build.make CMakeFiles/adsb-decoder.dir/adsb.pb.cc.s
 .PHONY : adsb.pb.cc.s
 
+src/aircraft.o: src/aircraft.cpp.o
+.PHONY : src/aircraft.o
+
+# target to build an object file
+src/aircraft.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/adsb-decoder.dir/build.make CMakeFiles/adsb-decoder.dir/src/aircraft.cpp.o
+.PHONY : src/aircraft.cpp.o
+
+src/aircraft.i: src/aircraft.cpp.i
+.PHONY : src/aircraft.i
+
+# target to preprocess a source file
+src/aircraft.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/adsb-decoder.dir/build.make CMakeFiles/adsb-decoder.dir/src/aircraft.cpp.i
+.PHONY : src/aircraft.cpp.i
+
+src/aircraft.s: src/aircraft.cpp.s
+.PHONY : src/aircraft.s
+
+# target to generate assembly for a file
+src/aircraft.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/adsb-decoder.dir/build.make CMakeFiles/adsb-decoder.dir/src/aircraft.cpp.s
+.PHONY : src/aircraft.cpp.s
+
+src/cpr.o: src/cpr.cpp.o
+.PHONY : src/cpr.o
+
+# target to build an object file
+src/cpr.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/adsb-decoder.dir/build.make CMakeFiles/adsb-decoder.dir/src/cpr.cpp.o
+.PHONY : src/cpr.cpp.o
+
+src/cpr.i: src/cpr.cpp.i
+.PHONY : src/cpr.i
+
+# target to preprocess a source file
+src/cpr.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/adsb-decoder.dir/build.make CMakeFiles/adsb-decoder.dir/src/cpr.cpp.i
+.PHONY : src/cpr.cpp.i
+
+src/cpr.s: src/cpr.cpp.s
+.PHONY : src/cpr.s
+
+# target to generate assembly for a file
+src/cpr.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/adsb-decoder.dir/build.make CMakeFiles/adsb-decoder.dir/src/cpr.cpp.s
+.PHONY : src/cpr.cpp.s
+
 src/decoder.o: src/decoder.cpp.o
 .PHONY : src/decoder.o
 
@@ -249,6 +297,30 @@ src/sdr.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/adsb-decoder.dir/build.make CMakeFiles/adsb-decoder.dir/src/sdr.cpp.s
 .PHONY : src/sdr.cpp.s
 
+src/server.o: src/server.cpp.o
+.PHONY : src/server.o
+
+# target to build an object file
+src/server.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/adsb-decoder.dir/build.make CMakeFiles/adsb-decoder.dir/src/server.cpp.o
+.PHONY : src/server.cpp.o
+
+src/server.i: src/server.cpp.i
+.PHONY : src/server.i
+
+# target to preprocess a source file
+src/server.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/adsb-decoder.dir/build.make CMakeFiles/adsb-decoder.dir/src/server.cpp.i
+.PHONY : src/server.cpp.i
+
+src/server.s: src/server.cpp.s
+.PHONY : src/server.s
+
+# target to generate assembly for a file
+src/server.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/adsb-decoder.dir/build.make CMakeFiles/adsb-decoder.dir/src/server.cpp.s
+.PHONY : src/server.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -261,6 +333,12 @@ help:
 	@echo "... adsb.pb.o"
 	@echo "... adsb.pb.i"
 	@echo "... adsb.pb.s"
+	@echo "... src/aircraft.o"
+	@echo "... src/aircraft.i"
+	@echo "... src/aircraft.s"
+	@echo "... src/cpr.o"
+	@echo "... src/cpr.i"
+	@echo "... src/cpr.s"
 	@echo "... src/decoder.o"
 	@echo "... src/decoder.i"
 	@echo "... src/decoder.s"
@@ -273,6 +351,9 @@ help:
 	@echo "... src/sdr.o"
 	@echo "... src/sdr.i"
 	@echo "... src/sdr.s"
+	@echo "... src/server.o"
+	@echo "... src/server.i"
+	@echo "... src/server.s"
 .PHONY : help
 
 

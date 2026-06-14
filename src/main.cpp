@@ -1,12 +1,15 @@
 #include "sdr.h"
 #include "preamble.h"
 #include "decoder.h"
+#include "aircraft.h"
+#include "server.h"
 #include "adsb.pb.h"
 #include <iostream>
 #include <vector>
 #include <cstring>
 #include <csignal>
 #include <cstdio>
+#include <chrono>
 
 static volatile bool g_running = true;
 void sigHandler(int) { g_running = false; }
@@ -16,6 +19,7 @@ int main(int argc, char* argv[]) {
     GOOGLE_PROTOBUF_VERIFY_VERSION;
 
     SdrCapture sdr;
+    uint16_t port = 30003;
 
     if (argc > 1 && std::strcmp(argv[1], "--live") == 0) {
         std::string cfg_path = (argc > 2) ? argv[2] : "../config/bladerf.conf";
@@ -34,23 +38,27 @@ int main(int argc, char* argv[]) {
     preamble.setThreshold(3.0f);
 
     ModeSDecoder decoder;
-    // CRC test with known-good frame from dump1090 README
-    // *8d479e84580fd03d66d139c1cd17;
-    uint8_t test_msg[] = {0x8D, 0x47, 0x9E, 0x84, 0x58, 0x0F, 0xD0, 0x3D,
-                          0x66, 0xD1, 0x39, 0xC1, 0xCD, 0x17};
-    uint32_t test_crc = decoder.crc24(test_msg, 88);
-    uint32_t test_recv = (test_msg[11] << 16) | (test_msg[12] << 8) | test_msg[13];
-    std::printf("[CRC TEST] computed=%06X received=%06X match=%s\n",
-        test_crc, test_recv, test_crc == test_recv ? "YES" : "NO");
+    AircraftTracker tracker;
+
+    TcpServer server;
+    if (!server.listen(port)) {
+        std::cerr << "Failed to start TCP server\n";
+        return 1;
+    }
 
     constexpr size_t CHUNK = 2 * 1024 * 1024;
     std::vector<IQSample> buf(CHUNK);
     size_t total_frames = 0, valid_frames = 0;
-    size_t df_counts[32] = {};
+
+    auto start_time = std::chrono::steady_clock::now();
 
     while (g_running) {
         size_t n = sdr.readSamples(buf.data(), CHUNK);
         if (n == 0) break;
+
+        auto now = std::chrono::steady_clock::now();
+        int64_t ts = std::chrono::duration_cast<std::chrono::milliseconds>(
+            now - start_time).count();
 
         auto offsets = preamble.detect(buf.data(), n);
 
@@ -61,40 +69,50 @@ int main(int argc, char* argv[]) {
             ModeSFrame frame;
             if (decoder.decode(&buf[frame_start], remaining, frame)) {
                 total_frames++;
-                df_counts[frame.downlink_format & 0x1F]++;
-
                 if (frame.crc_valid) {
                     valid_frames++;
-                }
+                    tracker.update(frame, ts);
 
-                if (frame.downlink_format == 17) {
-                    std::printf("DF17 ICAO:%06X CRC:%s Power:%.1f dBFS  HEX:",
-                        frame.icao_address,
-                        frame.crc_valid ? "OK  " : "FAIL",
-                        frame.signal_power);
-                    for (int b = 0; b < 14; b++) {
-                        std::printf("%02X", frame.payload[b]);
+                    // Broadcast updated aircraft to all TCP clients
+                    if (frame.downlink_format == 17) {
+                        auto* ac = tracker.getAircraft(frame.icao_address);
+                        if (ac) {
+                            server.broadcast(*ac, ts);
+                        }
                     }
-                    std::printf("\n");
-                } else if (frame.crc_valid) {
-                    std::printf("DF%02d ICAO:%06X CRC:OK   Power:%.1f dBFS\n",
-                        frame.downlink_format, frame.icao_address, frame.signal_power);
                 }
             }
         }
+
+        tracker.expireStale(ts);
     }
 
-    std::printf("\n--- Summary ---\n");
-    std::printf("Total frames: %zu  Valid: %zu  CRC pass rate: %.1f%%\n",
+    // Print tracked aircraft
+    auto aircraft = tracker.getAllActive();
+    std::printf("\n--- Tracked Aircraft: %zu ---\n", aircraft.size());
+    for (auto* ac : aircraft) {
+        std::printf("  ICAO:%06X", ac->icao_address);
+        if (!ac->callsign.empty()) {
+            std::printf("  Callsign:%-8s", ac->callsign.c_str());
+        }
+        if (ac->position_valid) {
+            std::printf("  Lat:%8.4f  Lon:%9.4f", ac->latitude, ac->longitude);
+        }
+        if (ac->altitude_ft != 0) {
+            std::printf("  Alt:%5dft", ac->altitude_ft);
+        }
+        if (ac->ground_speed > 0) {
+            std::printf("  Spd:%.0fkt  Hdg:%.0f", ac->ground_speed, ac->heading);
+        }
+        std::printf("  Pwr:%.1f dBFS\n", ac->signal_power);
+    }
+
+    std::printf("\nTotal frames: %zu  Valid: %zu  CRC pass rate: %.1f%%\n",
         total_frames, valid_frames,
         total_frames > 0 ? 100.0 * valid_frames / total_frames : 0.0);
-    std::printf("\nDF distribution:\n");
-    for (int i = 0; i < 32; i++) {
-        if (df_counts[i] > 0) {
-            std::printf("  DF%02d: %zu\n", i, df_counts[i]);
-        }
-    }
+    std::printf("Clients connected: %d\n", server.clientCount());
 
+    server.stop();
     sdr.stop();
     google::protobuf::ShutdownProtobufLibrary();
     return 0;

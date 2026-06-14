@@ -136,10 +136,52 @@ CMakeFiles/adsb-decoder.dir/src/decoder.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/adsb-decoder.dir/src/decoder.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/timodagoat/code/ADS-B_decoder/src/decoder.cpp -o CMakeFiles/adsb-decoder.dir/src/decoder.cpp.s
 
+CMakeFiles/adsb-decoder.dir/src/cpr.cpp.o: CMakeFiles/adsb-decoder.dir/flags.make
+CMakeFiles/adsb-decoder.dir/src/cpr.cpp.o: /home/timodagoat/code/ADS-B_decoder/src/cpr.cpp
+CMakeFiles/adsb-decoder.dir/src/cpr.cpp.o: CMakeFiles/adsb-decoder.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/timodagoat/code/ADS-B_decoder/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/adsb-decoder.dir/src/cpr.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/adsb-decoder.dir/src/cpr.cpp.o -MF CMakeFiles/adsb-decoder.dir/src/cpr.cpp.o.d -o CMakeFiles/adsb-decoder.dir/src/cpr.cpp.o -c /home/timodagoat/code/ADS-B_decoder/src/cpr.cpp
+
+CMakeFiles/adsb-decoder.dir/src/cpr.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/adsb-decoder.dir/src/cpr.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/timodagoat/code/ADS-B_decoder/src/cpr.cpp > CMakeFiles/adsb-decoder.dir/src/cpr.cpp.i
+
+CMakeFiles/adsb-decoder.dir/src/cpr.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/adsb-decoder.dir/src/cpr.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/timodagoat/code/ADS-B_decoder/src/cpr.cpp -o CMakeFiles/adsb-decoder.dir/src/cpr.cpp.s
+
+CMakeFiles/adsb-decoder.dir/src/aircraft.cpp.o: CMakeFiles/adsb-decoder.dir/flags.make
+CMakeFiles/adsb-decoder.dir/src/aircraft.cpp.o: /home/timodagoat/code/ADS-B_decoder/src/aircraft.cpp
+CMakeFiles/adsb-decoder.dir/src/aircraft.cpp.o: CMakeFiles/adsb-decoder.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/timodagoat/code/ADS-B_decoder/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/adsb-decoder.dir/src/aircraft.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/adsb-decoder.dir/src/aircraft.cpp.o -MF CMakeFiles/adsb-decoder.dir/src/aircraft.cpp.o.d -o CMakeFiles/adsb-decoder.dir/src/aircraft.cpp.o -c /home/timodagoat/code/ADS-B_decoder/src/aircraft.cpp
+
+CMakeFiles/adsb-decoder.dir/src/aircraft.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/adsb-decoder.dir/src/aircraft.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/timodagoat/code/ADS-B_decoder/src/aircraft.cpp > CMakeFiles/adsb-decoder.dir/src/aircraft.cpp.i
+
+CMakeFiles/adsb-decoder.dir/src/aircraft.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/adsb-decoder.dir/src/aircraft.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/timodagoat/code/ADS-B_decoder/src/aircraft.cpp -o CMakeFiles/adsb-decoder.dir/src/aircraft.cpp.s
+
+CMakeFiles/adsb-decoder.dir/src/server.cpp.o: CMakeFiles/adsb-decoder.dir/flags.make
+CMakeFiles/adsb-decoder.dir/src/server.cpp.o: /home/timodagoat/code/ADS-B_decoder/src/server.cpp
+CMakeFiles/adsb-decoder.dir/src/server.cpp.o: CMakeFiles/adsb-decoder.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/timodagoat/code/ADS-B_decoder/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/adsb-decoder.dir/src/server.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/adsb-decoder.dir/src/server.cpp.o -MF CMakeFiles/adsb-decoder.dir/src/server.cpp.o.d -o CMakeFiles/adsb-decoder.dir/src/server.cpp.o -c /home/timodagoat/code/ADS-B_decoder/src/server.cpp
+
+CMakeFiles/adsb-decoder.dir/src/server.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/adsb-decoder.dir/src/server.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/timodagoat/code/ADS-B_decoder/src/server.cpp > CMakeFiles/adsb-decoder.dir/src/server.cpp.i
+
+CMakeFiles/adsb-decoder.dir/src/server.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/adsb-decoder.dir/src/server.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/timodagoat/code/ADS-B_decoder/src/server.cpp -o CMakeFiles/adsb-decoder.dir/src/server.cpp.s
+
 CMakeFiles/adsb-decoder.dir/adsb.pb.cc.o: CMakeFiles/adsb-decoder.dir/flags.make
 CMakeFiles/adsb-decoder.dir/adsb.pb.cc.o: adsb.pb.cc
 CMakeFiles/adsb-decoder.dir/adsb.pb.cc.o: CMakeFiles/adsb-decoder.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/timodagoat/code/ADS-B_decoder/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/adsb-decoder.dir/adsb.pb.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/timodagoat/code/ADS-B_decoder/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/adsb-decoder.dir/adsb.pb.cc.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/adsb-decoder.dir/adsb.pb.cc.o -MF CMakeFiles/adsb-decoder.dir/adsb.pb.cc.o.d -o CMakeFiles/adsb-decoder.dir/adsb.pb.cc.o -c /home/timodagoat/code/ADS-B_decoder/build/adsb.pb.cc
 
 CMakeFiles/adsb-decoder.dir/adsb.pb.cc.i: cmake_force
@@ -156,6 +198,9 @@ adsb__decoder_OBJECTS = \
 "CMakeFiles/adsb-decoder.dir/src/sdr.cpp.o" \
 "CMakeFiles/adsb-decoder.dir/src/preamble.cpp.o" \
 "CMakeFiles/adsb-decoder.dir/src/decoder.cpp.o" \
+"CMakeFiles/adsb-decoder.dir/src/cpr.cpp.o" \
+"CMakeFiles/adsb-decoder.dir/src/aircraft.cpp.o" \
+"CMakeFiles/adsb-decoder.dir/src/server.cpp.o" \
 "CMakeFiles/adsb-decoder.dir/adsb.pb.cc.o"
 
 # External object files for target adsb-decoder
@@ -165,12 +210,15 @@ adsb-decoder: CMakeFiles/adsb-decoder.dir/src/main.cpp.o
 adsb-decoder: CMakeFiles/adsb-decoder.dir/src/sdr.cpp.o
 adsb-decoder: CMakeFiles/adsb-decoder.dir/src/preamble.cpp.o
 adsb-decoder: CMakeFiles/adsb-decoder.dir/src/decoder.cpp.o
+adsb-decoder: CMakeFiles/adsb-decoder.dir/src/cpr.cpp.o
+adsb-decoder: CMakeFiles/adsb-decoder.dir/src/aircraft.cpp.o
+adsb-decoder: CMakeFiles/adsb-decoder.dir/src/server.cpp.o
 adsb-decoder: CMakeFiles/adsb-decoder.dir/adsb.pb.cc.o
 adsb-decoder: CMakeFiles/adsb-decoder.dir/build.make
 adsb-decoder: CMakeFiles/adsb-decoder.dir/compiler_depend.ts
 adsb-decoder: /usr/lib/x86_64-linux-gnu/libprotobuf.so
 adsb-decoder: CMakeFiles/adsb-decoder.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/timodagoat/code/ADS-B_decoder/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable adsb-decoder"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/timodagoat/code/ADS-B_decoder/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Linking CXX executable adsb-decoder"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/adsb-decoder.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

@@ -16,9 +16,11 @@ add_executable(adsb-decoder
     src/sdr.cpp
     src/preamble.cpp
     src/decoder.cpp
+    src/cpr.cpp
+    src/aircraft.cpp
+    src/server.cpp
     ${PROTO_SRCS}
 )
-
 target_include_directories(adsb-decoder PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_BINARY_DIR}

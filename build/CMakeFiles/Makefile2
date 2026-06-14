@@ -85,12 +85,12 @@ clean: CMakeFiles/adsb-decoder.dir/clean
 CMakeFiles/adsb-decoder.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/adsb-decoder.dir/build.make CMakeFiles/adsb-decoder.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/adsb-decoder.dir/build.make CMakeFiles/adsb-decoder.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/timodagoat/code/ADS-B_decoder/build/CMakeFiles --progress-num=1,2,3,4,5,6,7 "Built target adsb-decoder"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/timodagoat/code/ADS-B_decoder/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10 "Built target adsb-decoder"
 .PHONY : CMakeFiles/adsb-decoder.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/adsb-decoder.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/timodagoat/code/ADS-B_decoder/build/CMakeFiles 7
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/timodagoat/code/ADS-B_decoder/build/CMakeFiles 10
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/adsb-decoder.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/timodagoat/code/ADS-B_decoder/build/CMakeFiles 0
 .PHONY : CMakeFiles/adsb-decoder.dir/rule
@@ -102,7 +102,7 @@ adsb-decoder: CMakeFiles/adsb-decoder.dir/rule
 # codegen rule for target.
 CMakeFiles/adsb-decoder.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/adsb-decoder.dir/build.make CMakeFiles/adsb-decoder.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/timodagoat/code/ADS-B_decoder/build/CMakeFiles --progress-num=1,2,3,4,5,6,7 "Finished codegen for target adsb-decoder"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/timodagoat/code/ADS-B_decoder/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10 "Finished codegen for target adsb-decoder"
 .PHONY : CMakeFiles/adsb-decoder.dir/codegen
 
 # clean rule for target.
