@@ -5,6 +5,7 @@ adsb-decoder: \
   CMakeFiles/adsb-decoder.dir/src/main.cpp.o \
   CMakeFiles/adsb-decoder.dir/src/sdr.cpp.o \
   CMakeFiles/adsb-decoder.dir/src/preamble.cpp.o \
+  CMakeFiles/adsb-decoder.dir/src/decoder.cpp.o \
   CMakeFiles/adsb-decoder.dir/adsb.pb.cc.o \
   /usr/lib/x86_64-linux-gnu/libprotobuf.so \
   /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libbladeRF.so \
@@ -52,6 +53,8 @@ CMakeFiles/adsb-decoder.dir/src/main.cpp.o:
 CMakeFiles/adsb-decoder.dir/src/sdr.cpp.o:
 
 CMakeFiles/adsb-decoder.dir/src/preamble.cpp.o:
+
+CMakeFiles/adsb-decoder.dir/src/decoder.cpp.o:
 
 CMakeFiles/adsb-decoder.dir/adsb.pb.cc.o:
 

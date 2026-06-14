@@ -15,6 +15,7 @@ add_executable(adsb-decoder
     src/main.cpp
     src/sdr.cpp
     src/preamble.cpp
+    src/decoder.cpp
     ${PROTO_SRCS}
 )
 

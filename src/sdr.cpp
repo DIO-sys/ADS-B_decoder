@@ -34,14 +34,16 @@ SdrConfig SdrCapture::loadConfig(const std::string& path) {
     return cfg;
 }
 
-bool SdrCapture::initFromFile(const std::string& path) {
+bool SdrCapture::initFromFile(const std::string& path, IQFormat fmt) {
     file_.open(path, std::ios::binary);
     if (!file_.is_open()) {
         std::cerr << "[SdrCapture] Failed to open: " << path << "\n";
         return false;
     }
+    format_ = fmt;
     live_ = false;
-    std::cout << "[SdrCapture] Opened IQ file: " << path << "\n";
+    std::cout << "[SdrCapture] Opened IQ file: " << path
+              << " (format: " << (fmt == IQFormat::UC8 ? "UC8" : "SC16Q11") << ")\n";
     return true;
 }
 
@@ -112,6 +114,18 @@ size_t SdrCapture::readSamples(IQSample* buf, size_t max_samples) {
             return 0;
         }
         return max_samples;
+    }
+
+    if (format_ == IQFormat::UC8) {
+        std::vector<uint8_t> raw(max_samples * 2);
+        file_.read(reinterpret_cast<char*>(raw.data()), max_samples * 2);
+        size_t n = file_.gcount() / 2;
+        for (size_t i = 0; i < n; i++) {
+            int16_t I = (static_cast<int16_t>(raw[i * 2])     - 127) * 256;
+            int16_t Q = (static_cast<int16_t>(raw[i * 2 + 1]) - 127) * 256;
+            buf[i] = IQSample(I, Q);
+        }
+        return n;
     }
 
     file_.read(reinterpret_cast<char*>(buf), max_samples * sizeof(IQSample));
