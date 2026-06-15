@@ -1,0 +1,36 @@
+# Build
+build/
+*.o
+*.d
+
+# Protobuf generated
+*.pb.cc
+*.pb.h
+*_pb2.py
+__pycache__/
+*.pyc
+
+# IQ captures
+samples/
+*.bin
+
+# Database
+*.db
+
+# Analysis output
+*.png
+
+# Node modules
+bridge/node_modules/
+bridge/package-lock.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
