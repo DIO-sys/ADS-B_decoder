@@ -245,7 +245,7 @@ adsb-decoder/
 ## Related
 
 - [spectrum_analyzer](https://github.com/DIO-sys/spectrum_analyzer) — passive RF observation at 40 MSPS on the same BladeRF. Built to see the RF environment before transmitting into it. Provided the IQ capture pipeline reused in this project.
-- [modulation_toolkit](https://github.com/DIO-sys/modulation_toolkit) — full digital communications stack on the same hardware. BPSK through coded OFDM with C-V2X demo. Controlled both ends of the link. This project is the first where the transmitter is not yours.
+- [modulation_toolkit](https://github.com/DIO-sys/modulation_toolkit) — full digital communications stack on the same hardware. BPSK through coded OFDM with C-V2X demo. Controlled both ends of the link. 
 
 ---
 
