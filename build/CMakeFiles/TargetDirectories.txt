@@ -1,3 +1,0 @@
-/home/timodagoat/code/ADS-B_decoder/build/CMakeFiles/adsb-decoder.dir
-/home/timodagoat/code/ADS-B_decoder/build/CMakeFiles/edit_cache.dir
-/home/timodagoat/code/ADS-B_decoder/build/CMakeFiles/rebuild_cache.dir
