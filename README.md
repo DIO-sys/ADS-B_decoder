@@ -9,16 +9,13 @@ The spectrum analyzer showed what was in the air. The modulation toolkit control
 ## Screenshots
 
 **Live Leaflet Map — 12 aircraft tracked simultaneously around Yaoundé**
-<!-- ![Leaflet Map](result_photos/leaflet_map.png) -->
+![Leaflet Map](result_photos/leaflet_map.png)
 
 **Decoded Aircraft — AMC421 (Malta-registered, ICAO 4D2023) validated against dump1090**
 ```
 --- Tracked Aircraft: 1 ---
   ICAO:4D2023  Callsign:AMC421    Lat: 36.9689  Lon:  13.8517  Alt:20250ft  Spd:372kt  Hdg:158  Pwr:-9.1 dBFS
 ```
-
-**Python Analysis — message rate, altitude distribution, signal power, unique aircraft**
-<!-- ![Analysis Plots](result_photos/adsb_analysis.png) -->
 
 ---
 
