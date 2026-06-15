@@ -2,8 +2,7 @@
 
 Every commercial aircraft around us is broadcasting its position, altitude, velocity, and identity on 1090 MHz right now  unencrypted, unauthenticated, continuous. The FAA mandates it. ICAO publishes the spec. This project decodes those broadcasts from first principles in C++17, validates every message against dump1090 running on the same capture, and streams verified aircraft state to live clients over TCP.
 
-The spectrum analyzer showed what was in the air. The modulation toolkit controlled both ends of a link. This is the first project where the transmitter is a 737 at 35,000 feet and we're just receiving. From IQ samples captured off a whip antenna to verified aircraft positions consumed by a live web map and a Python logging client this project owns the full RF to application pipeline
-
+The spectrum analyzer showed what was in the air. The modulation toolkit controlled both ends of a link. This is the first project where the transmitter is a 737 at 35,000 feet and we're just receiving. Using the IQ samples captured off a 1090 mhz antenna consumed by a live web map amd a Python logging client this application owns the full pipeline
 ---
 
 ## Screenshots
@@ -229,12 +228,6 @@ adsb-decoder/
 | SQLite             | Persistent aircraft record logging       |
 | Matplotlib         | Statistical analysis plots               |
 | dump1090           | Reference decoder for validation         |
-
----
-
-## TCP vs UDP
-
-Decoded telemetry requires every message delivered in order. A missed ADS-B record means a gap in aircraft track history — unlike raw IQ streaming where a dropped packet is preferable to a delayed one causing buffer backup, you cannot interpolate position reliably if you don't know the time gap. TCP guarantees ordered delivery with automatic retransmission. UDP would require reimplementing sequencing and acknowledgment at the application layer, adding complexity with no benefit for this data rate.
 
 ---
 
