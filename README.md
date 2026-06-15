@@ -258,4 +258,4 @@ Decoded telemetry requires every message delivered in order. A missed ADS-B reco
 
 ## Documentation
 
-- [Architecture](ARCHITECTURE.md) — preamble detection, CRC-24 implementation, CPR algorithm, TCP streaming design, and the decisions behind each
+- [Architecture](ARCHITECTURE.md) — preamble detection, CRC-24 implementation, CPR algorithm, TCP streaming design, and why i did each
