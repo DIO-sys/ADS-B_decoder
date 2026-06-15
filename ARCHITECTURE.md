@@ -8,7 +8,7 @@ This document covers the design decisions, tradeoffs, and implementation details
 
 The BladeRF 2.0 Micro xA4 is configured to 1090 MHz at 2 MSPS in SC16Q11 format using signed 16-bit I and Q interleaved, with 11 fractional bits. This is the minimum sample rate for Mode S: the 1 Mbps pulse position modulation requires exactly 2 samples per bit period to distinguish early from late pulse energy.
 
-Configuration is loaded from `config/bladerf.conf` at startup. All BladeRF parameters — frequency, sample rate, bandwidth, gain, buffer geometry, timeout — are externalized so the same binary works across different RF environments without recompilation. The `SdrCapture` class abstracts hardware from file: the rest of the pipeline calls `readSamples()` and never knows whether the data comes from a live antenna or a recording. This abstraction enabled the entire decoder to be developed and validated against recorded IQ files before any antenna was connected.
+Configuration is loaded from `config/bladerf.conf` at startup. All BladeRF parameters like frequency, sample rate, bandwidth, gain, buffer geometry, and timeout are externalized so the same binary works across different RF environments without recompilation. The `SdrCapture` class abstracts hardware from file: the rest of the pipeline calls `readSamples()` and never knows whether the data comes from a live antenna or a recording. This abstraction enabled the entire decoder to be developed and validated against recorded IQ files before any antenna was connected.
 
 UC8 format support (unsigned 8-bit IQ pairs used by RTL-SDR and dump1090 test files) is handled by converting to the internal int16 representation at read time: `(raw - 127) * 256`. The scaling factor preserves dynamic range without introducing quantization artifacts in the magnitude calculation.
 
@@ -20,7 +20,7 @@ Mode S transmissions begin with a fixed 8-microsecond preamble: four 0.5-microse
 
 ### Why Correlation Instead of Threshold
 
-A simple magnitude threshold — "trigger when the signal exceeds X" — fails in the presence of noise and multipath. A strong noise spike looks identical to a pulse. Correlation against the known pattern gives a confidence measure: the ratio of energy at expected pulse positions to energy at expected quiet positions. Random noise has equal energy everywhere and scores near 1.0. A real preamble has concentrated energy at the four pulse positions and near-zero energy between them, scoring 3.0 or higher.
+The magnitude threshold "trigger when the signal exceeds X" fails in the presence of noise and multipath. A strong noise spike looks identical to a pulse. Correlation against the known pattern gives a confidence measure: the ratio of energy at expected pulse positions to energy at expected quiet positions. Random noise has equal energy everywhere and scores near 1.0. A real preamble has concentrated energy at the four pulse positions and near-zero energy between them, scoring 3.0 or higher.
 
 ### Quick-Reject Filtering
 
@@ -77,7 +77,7 @@ for (size_t i = 0; i < bytes; i++) {
 
 CRC validation occurs before any payload field is parsed. If CRC fails, the frame is discarded without further processing. For DF17 (ADS-B), the CRC covers the data directly. For DF11 (all-call reply), the ICAO address is XORed into the CRC remainder, so validation requires a different approach in that case the decoder extracts the address from the XOR of computed and received CRC values.
 
-The initial bit-by-bit CRC implementation produced incorrect results due to an XOR timing error — the generator polynomial was applied simultaneously with the data bit insertion rather than after the shift. This was identified by testing against a known-good message from the dump1090 test suite (`8D479E84580FD03D66D139C1CD17`). Switching to the byte-oriented approach resolved the issue. The lesson: always validate cryptographic and integrity functions with known test vectors before trusting downstream results.
+The initial bit-by-bit CRC implementation produced incorrect results due to an XOR timing error because the generator polynomial was applied simultaneously with the data bit insertion rather than after the shift. This was identified by testing against a known-good message from the dump1090 test suite (`8D479E84580FD03D66D139C1CD17`). Switching to the byte-oriented approach resolved the issue. So we learned to always validate cryptographic and integrity functions with known test vectors before trusting downstream results.
 
 ### Downlink Format Parsing
 
@@ -93,11 +93,11 @@ Only DF17 (extended squitter, ADS-B) and DF11 (all-call reply) are processed. DF
 
 ## Compact Position Reporting (CPR)
 
-CPR is the most technically interesting component of the decoder. The problem: transmitting a full latitude and longitude at reasonable precision would require far more bits than the 17 available in each coordinate field. ICAO's solution encodes position across alternating even and odd frames using different zone grids.
+CPR is my favorite part and also the hardest problem we have to  transmit a full latitude and longitude at reasonable precision would need a lot more bits than the 17 available in each coordinate field. ICAO's solution encodes position across alternating even and odd frames using different zone grids.
 
 ### How It Works
 
-The earth's latitude is divided into zones — 60 for even frames, 59 for odd frames. Each frame transmits the aircraft's position as a fractional offset within its zone grid, encoded as a 17-bit integer (0 to 131,071). Because the two grids have different zone counts, there is exactly one latitude band where both encoded values are consistent. This resolves the ambiguity without either frame needing to carry full coordinates.
+The earth's latitude is divided into zones, being 60 for even frames, 59 for odd frames. Each frame transmits the aircraft's position as a fractional offset within its zone grid, encoded as a 17-bit integer (0 to 131,071). Because the two grids have different zone counts, there is exactly one latitude band where both encoded values are consistent. This resolves the ambiguity without either frame needing to carry full coordinates.
 
 Longitude resolution depends on latitude through the NL (Number of Longitude zones) function, which accounts for meridian convergence toward the poles. At the equator there are 59 longitude zones; near the poles there is 1. The NL function uses a trigonometric formula from the ICAO spec to compute the zone count for any latitude.
 
@@ -111,7 +111,7 @@ Before computing longitude, the decoder verifies that the even and odd latitudes
 
 ### Validated Result
 
-Aircraft 4D2023 (AMC421) decoded to 36.9689 N, 13.8517 E — over the Mediterranean Sea south of Sicily. The position, altitude (20,250 ft), heading (158 deg), and speed (372 kt) are consistent with a southbound commercial route from Europe to North Africa.
+Aircraft 4D2023 (AMC421) decoded to 36.9689 N, 13.8517 E which is over the Mediterranean Sea south of Sicily. The position, altitude (20,250 ft), heading (158 deg), and speed (372 kt) are consistent with a southbound commercial route from Europe to North Africa.
 
 ---
 
@@ -132,7 +132,7 @@ The tracker only processes CRC-valid DF17 messages. DF11 messages are accepted f
 
 ## Protobuf Serialization
 
-The `AircraftRecord` protobuf message carries all decoded fields. Protocol Buffers were chosen over raw JSON for three reasons. First, binary efficiency because a serialized AircraftRecord is typically 30-50 bytes vs 200+ bytes for equivalent JSON. At high message rates this matters for TCP throughput. Second, schema evolution so that fields can be added without breaking existing clients. Third, cross-language support — the same `.proto` file generates both the C++ server serializer and the Python client deserializer, guaranteeing wire compatibility.
+The `AircraftRecord` protobuf message carries all decoded fields. Protocol Buffers were chosen over raw JSON for three reasons. First, binary efficiency because a serialized AircraftRecord is typically 30-50 bytes vs 200+ bytes for equivalent JSON. At high message rates this matters for TCP throughput. Second, schema evolution so that fields can be added without breaking existing clients. Third, cross-language support because the same `.proto` file generates both the C++ server serializer and the Python client deserializer, guaranteeing wire compatibility.
 
 Messages are framed with a 4-byte big-endian length prefix. The receiver reads 4 bytes to learn the payload size, then reads exactly that many bytes and deserializes. This solves TCP's stream-oriented nature and without framing, message boundaries would be lost in the byte stream.
 
@@ -146,7 +146,7 @@ The server uses POSIX sockets with a background accept thread. The main decode l
 
 The accept loop runs in a dedicated thread, blocking on `select()` with a 1-second timeout. This allows clean shutdown: when `stop()` sets the `running_` flag to false, the thread exits within 1 second rather than hanging in a blocking `accept()` call.
 
-The client list is protected by a mutex shared between the accept thread (which adds clients) and the main thread (which broadcasts to them). The mutex is held briefly — only during the list modification or iteration, not during I/O.
+The client list is protected by a mutex shared between the accept thread (which adds clients) and the main thread (which broadcasts to them). The mutex is held briefly that only during the list modification or iteration, not during I/O.
 
 ### Client Disconnect Handling
 
@@ -162,7 +162,7 @@ For the expected client count (1-5 clients: web map, Python logger, occasional d
 
 Browsers cannot open raw TCP sockets. The Node.js bridge connects to the TCP server as a client, deserializes each length-prefixed protobuf message using the same `.proto` schema, converts to JSON, and forwards to all connected WebSocket clients. It auto-reconnects to the TCP server on disconnection.
 
-The bridge is intentionally thin — no buffering, no transformation, no state. It exists solely to cross the TCP-to-WebSocket boundary. In a production system this could be replaced by a WebSocket endpoint built directly into the C++ server, but the Node.js approach was faster to implement and easier to modify during development.
+The bridge is intentionally thin that means no buffering, no transformation, no state. It exists solely to cross the TCP-to-WebSocket boundary. In a production system this could be replaced by a WebSocket endpoint built directly into the C++ server, but the Node.js approach was faster to implement and easier to modify during development.
 
 ---
 
@@ -170,7 +170,7 @@ The bridge is intentionally thin — no buffering, no transformation, no state. 
 
 The browser client connects to the WebSocket bridge and maintains an in-memory aircraft table. Each incoming message creates or updates a marker on the Leaflet map with an SVG aircraft icon rotated to match heading, and a persistent tooltip showing callsign, altitude, and speed.
 
-Aircraft markers expire after 60 seconds without updates. The map auto-centers on the data — with one aircraft it zooms to its position, with many it adjusts to show all.
+Aircraft markers expire after 60 seconds without updates. The map auto-centers on the data and with one aircraft it zooms to its position, with many it adjusts to show all.
 
 ### Demo Mode
 
